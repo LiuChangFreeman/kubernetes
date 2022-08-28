@@ -1,9 +1,8 @@
 name: Build
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+    - 'v*'
 jobs:
   integration_tests:
     strategy:
