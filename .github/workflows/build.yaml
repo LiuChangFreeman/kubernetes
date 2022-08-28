@@ -1,8 +1,7 @@
 name: Build
 on:
   push:
-    tags:
-    - 'v*'
+    branches: [ dev ]
 jobs:
   integration_tests:
     strategy:
