@@ -1,0 +1,30 @@
+name: Build
+on:
+  push:
+    branches: [ dev ]
+jobs:
+  build:
+    strategy:
+      matrix:
+        go: ['1.17']
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          build/run.sh make kubeadm KUBE_BUILD_PLATFORMS=linux/amd64
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            _output/dockerized/bin/linux/amd64/kubeadm
